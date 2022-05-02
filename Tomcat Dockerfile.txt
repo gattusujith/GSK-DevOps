@@ -1,0 +1,84 @@
+FROM ubuntu:latest
+RUN apt-get -y update && apt-get -y upgrade
+RUN apt-get -y install openjdk-8-jdk wget
+RUN mkdir /usr/local/tomcat
+RUN wget https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.58/bin/apache-tomcat-9.0.58.tar.gz -O /tmp/tomcat.tar.gz
+RUN cd /tmp && tar xzf apache-tomcat-9.0.58.tar.gz
+RUN mv apache-tomcat-9.0.58 /usr/local/tomcat9
+
+RUN echo "export CATALINA_HOME="/usr/local/tomcat9"" >> ~/.bashrc
+RUN echo "export JAVA_HOME="/usr/lib/jvm/java-11-oracle"" >> ~/.bashrc
+RUN echo "export JRE_HOME="/usr/lib/jvm/java-11-oracle"" >> ~/.bashrc
+RUN source ~/.bashrc
+
+RUN <!-- user manager can access only manager section -->
+RUN <role rolename="manager-gui" />
+RUN <user username="manager" password="_SECRET_PASSWORD_" roles="manager-gui" />
+RUN +<!-- user admin can access manager and admin section both -->
+RUN <role rolename="admin-gui" />
+RUN <user username="admin" password="_SECRET_PASSWORD_" roles="manager-gui,admin-gui" />
+
+RUN cd /usr/local/apache-tomcat9
+RUN chmod +x ./bin/startup.sh
+RUN ./bin/startup.sh
+EXPOSE 8080
+CMD /usr/local/tomcat/bin/catalina.sh run
+
+
+
+
+
+ROM ubuntu:latest
+RUN apt-get -y update && apt-get -y upgrade
+RUN apt-get -y install openjdk-8-jdk wget
+RUN mkdir /usr/local/tomcat
+RUN wget http://www-us.apache.org/dist/tomcat/tomcat-8/v8.5.16/bin/apache-tomcat-8.5.16.tar.gz -O /tmp/tomcat.tar.gz
+RUN cd /tmp && tar xvfz tomcat.tar.gz
+RUN cp -Rv /tmp/apache-tomcat-8.5.16/* /usr/local/tomcat/
+EXPOSE 8080
+CMD /usr/local/tomcat/bin/catalina.sh run
+
+
+
+
+
+FROM ubuntu:latest
+RUN apt-get -y update && apt-get -y upgrade
+RUN apt-get -y install openjdk-8-jdk wget
+RUN mkdir /usr/local/tomcat
+RUN wget https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.58/bin/apache-tomcat-9.0.58.tar.gz
+RUN cd /tmp && tar xzf apache-tomcat-9.0.58.tar.gz
+RUN mv apache-tomcat-9.0.58 /usr/local/tomcat9
+RUN echo "export CATALINA_HOME="/usr/local/tomcat9"" >> ~/.bashrc
+RUN echo "export JAVA_HOME="/usr/lib/jvm/java-11-oracle"" >> ~/.bashrc
+RUN echo "export JRE_HOME="/usr/lib/jvm/java-11-oracle"" >> ~/.bashrc
+RUN source ~/.bashrc
+
+RUN <!-- user manager can access only manager section -->
+RUN <role rolename="manager-gui" />
+RUN <user username="manager" password="_SECRET_PASSWORD_" roles="manager-gui" />
+RUN +<!-- user admin can access manager and admin section both -->
+RUN <role rolename="admin-gui" />
+RUN <user username="admin" password="_SECRET_PASSWORD_" roles="manager-gui,admin-gui" />
+
+RUN cd /usr/local/apache-tomcat9
+RUN chmod +x ./bin/startup.sh
+RUN ./bin/startup.sh
+EXPOSE 8080
+CMD /usr/local/tomcat/bin/catalina.sh run
+
+
+
+
+
+
+FROM ubuntu:latest
+RUN apt-get -y update && apt-get -y upgrade
+RUN apt-get -y install openjdk-11-jdk wget
+RUN mkdir /usr/local/tomcat
+RUN wget https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.52/bin/apache-tomcat-9.0.52.tar.gz - O /tmp/tomcat.tar.gz
+RUN cd /tmp  && tar xvfz tomcat.tar.gz
+RUN cp -Rv /tmp/apache-tomcat-9.0.52/*  /usr/local/tomcat/
+ADD https://test-s3-vishnu.s3.ap-south-1.amazonaws.com/sample.war /usr/local/tomcat/webapps/
+EXPOSE 8080
+CMD /usr/local/tomcat/bin/catalina.sh run
